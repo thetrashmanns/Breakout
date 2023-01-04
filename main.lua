@@ -10,8 +10,8 @@
     0.1667 = 1/6
     0.0625 = 1/16
 ]]--
---This is my prefered utility library (can be found here: https://github.com/lunarmodules/Penlight).
-require("penlight")
+--This is my preferred utility library (can be found here: https://github.com/lunarmodules/Penlight).
+require "penlight"
 
 --[[
 	Converts a HEX color value to a RGBA color and then to Löve's RGBA format (11.3+ only).
@@ -43,7 +43,7 @@ function love.load()
 			g = 0,
 			b = 0
 		},
-		lifes = 3,
+		lives = 3,
 		show_message = false,
 		won = false,
 		score = 0,
@@ -99,6 +99,9 @@ function love.update(dt)
 				Ball.score = Ball.score + 3
 			end
 		end
+		if coroutine.status(temp) == "suspended" then
+			coroutine.resume(temp)
+		end
 		Ball.pos.x = Ball.pos.x + Ball.vel.x * dt
 		Ball.pos.y = Ball.pos.y + Ball.vel.y * dt
 		Paddle.pos.x = (Paddle.pos.x + Paddle.xs * dt > 0 and (Paddle.pos.x + Paddle.w) + Paddle.xs * dt < Window_w) and Paddle.pos.x + Paddle.xs * dt or Paddle.pos.x
@@ -118,7 +121,7 @@ function love.draw()
 	love.graphics.rectangle("fill", Paddle.pos.x, Paddle.pos.y, Paddle.w, Paddle.h)
 	Bricks.Draw()
 	love.graphics.setColor(0, 0, 1, 1)
-	love.graphics.print("Lives: " .. tostring(Ball.lifes) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
+	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
 	if Ball.show_message and not Ball.won then
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 2, 2)
@@ -173,7 +176,7 @@ function math.round(n, precision)
 end
 --Returns if a number is negative or not.
 function math.sign(n) return n > 0 and 1 or n < 0 and -1 or 0 end
---Self-explanitory
+--Self-explanatory
 function math.square(num) return num * num end
 --Clamps a number between 2 values
 function math.clamp(num, min, max) return math.min(math.max(min, num), max) end

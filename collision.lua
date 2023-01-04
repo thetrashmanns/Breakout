@@ -35,6 +35,7 @@ function Collision:Update()
 			local color = math.probability(Collision.b_color.chance, Collision.b_color.colors)
 			Ball.colors.r, Ball.colors.g, Ball.colors.b = color.r, color.g, color.b
 		end
+		coroutine.yield()
 		--I chose fuck for some humor :)
 		local wall_x = Ball.pos.x + Ball.r >= Window_w and Window_w or Ball.pos.x - Ball.r <= 0 and 0 or nil
 		local wall_y = Ball.pos.y + Ball.r >= Window_h and "fuck" or Ball.pos.y - Ball.r <= 0 and 0 or nil
@@ -45,8 +46,8 @@ function Collision:Update()
 			local wall = Vector2(Ball.pos.x, wall_y)
 			Collision:B_Dir(Ball, Vector2:Normal(wall))
 		elseif wall_y == "fuck" then
-			Ball.lifes = Ball.lifes - 1
-			if Ball.lifes <= 0 and not Ball.show_message then
+			Ball.lives = Ball.lives - 1
+			if Ball.lives <= 0 and not Ball.show_message then
 				Ball.show_message = true
 			end
 		end
