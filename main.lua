@@ -92,6 +92,7 @@ function love.update(dt)
 		Timer = Timer - dt
 	end
 	if not Ball.show_message and not Ball.quit then
+		--Reverse ipairs insures the bricks closest to the ball are check first (found at line #210).
 		for i,v in reverse_ipairs(Bricks.obj) do
 			if Collision:Hit(v) then
 				Collision:B_Dir(Ball, Vector2:Normal(v.pos))
