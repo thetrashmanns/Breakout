@@ -4,7 +4,7 @@ Bricks = {
 }
 
 function Bricks.Load()
-	Bricks.b_color = tablex.copy(Collision.b_color)
+	Bricks.b_color = table.copy(Collision.b_color)
 
 	local column = 0
 	local row = 1
@@ -15,7 +15,7 @@ function Bricks.Load()
 		brick.h = 25
 		brick.pos = Vector2(column * (brick.w + 8), row * (brick.h + 8))
 		brick.color = math.probability(Bricks.b_color.chance, Bricks.b_color.colors)
-		Bricks.obj[#Bricks.obj + 1] = brick
+		table.insert(Bricks.obj, brick)
 		column = column + 1
 		if column == 16 then
 			column = 0

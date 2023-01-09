@@ -1,12 +1,7 @@
 --- Generally useful routines.
--- See  @{01-introduction.md.Generally_useful_functions|the Guide}.
---
--- Dependencies: `pl.compat`, all exported fields and functions from
--- `pl.compat` are also available in this module.
---
 -- @module pl.utils
 local format = string.format
-local compat = require 'pl.compat'
+local compat = require 'compat'
 local stdout = io.stdout
 local append = table.insert
 local concat = table.concat

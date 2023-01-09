@@ -10,8 +10,6 @@
     0.1667 = 1/6
     0.0625 = 1/16
 ]]--
---This is my prefered utility library (can be found here: https://github.com/lunarmodules/Penlight).
-require("penlight")
 
 --[[
 	Converts a HEX color value to a RGBA color and then to Löve's RGBA format (11.3+ only).
@@ -28,7 +26,11 @@ function love.math.colorFromHEX(rgba)
 end
 
 function love.load()
-	--Dofile is generally better than require.
+	require('compat')
+	require('types')
+	require('utils')
+	require('class')
+	dofile("tablex.lua")
 	dofile("vector.lua")
 	love.window.setMode(1024, 768)
 	Window_w = love.graphics.getWidth()

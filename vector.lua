@@ -4,17 +4,20 @@ function Vector2:_init(x, y)
     self.x = x
     self.y = y
     self.length = function()
-        return math.abs(self.x^2, self.y^2)^0.5 or 1
+        return math.sqrt(math.abs(math.square(self.x) + math.square(self.y))) or 1
     end
 end
 --Verifys the vectors given to a function, was doing it multiple times so made a function.
 function Vector2:Verify(...)
-    if select("#", ...) > 0 then
-        local temp = table.pack(...)
-        for _,vector in ipairs(temp) do
-            if not self:class_of(vector) then
+    if select("#", ...) > 1 then
+        for vector = 1, select("#", ...) do
+            if not self:class_of(select(vector, ...)) then
                 error("A vector wasn't passed to a vector function!")
             end
+        end
+    elseif select("#", ...) == 1 then
+        if not self:class_of(select(1, ...)) then
+            error("A vector wasn't passed to a vector function!")
         end
     else
         error("No values were passed to a vector function!")

@@ -16,24 +16,26 @@ function Collision:Hit(brick)
 end
 
 function Collision:B_Dir(normal)
-	Vector2:Verify(normal, Ball.vel)
+	Vector2:Verify(normal)
 	local velocity = Ball.vel.length()
-	local norm1 = Vector2:Dot(Ball.vel, normal)^0.5
+	local sign_x, sign_y = math.sign(Ball.vel.x), math.sign(Ball.vel.y)
+	--Because of the equation this is based upon, norm1 is the square of the dot product.
+	local norm1 = math.sqrt(Vector2:Dot(Ball.vel, normal))
+	norm1 = sign_x == -1 and norm1 * sign_x or sign_y == -1 and norm1 * sign_y or norm1
 	local norm2 = Vector2:Dot(normal, normal)
 	local u = (norm1 / norm2) * normal.length()
 	local w = velocity - u
 	local v = w - u
 	local angle = math.atan2(w, u)
-	Ball.vel.x = v * math.cos(angle)
-	Ball.vel.y = v * math.sin(angle)
+	Ball.vel.x = v * math.sin(angle)
+	Ball.vel.y = v * math.cos(angle)
 end
 
 function Collision:Update()
 	return coroutine.create(function()
 		if Collision:Hit(Paddle) then
 			Collision:B_Dir(Ball, Vector2:Normal(Paddle.pos))
-			local color = math.probability(Collision.b_color.chance, Collision.b_color.colors)
-			Ball.colors.r, Ball.colors.g, Ball.colors.b = color.r, color.g, color.b
+			Ball.colors = math.probability(Collision.b_color.chance, Collision.b_color.colors)
 		end
 		--I chose fuck for some humor :)
 		local wall_x = Ball.pos.x + Ball.r >= Window_w and Window_w or Ball.pos.x - Ball.r <= 0 and 0 or nil
@@ -46,6 +48,7 @@ function Collision:Update()
 			Collision:B_Dir(Ball, Vector2:Normal(wall))
 		elseif wall_y == "fuck" then
 			Ball.lifes = Ball.lifes - 1
+			Ball.pos = Vector2(Window_w * 0.5, Window_h * 0.5)
 			if Ball.lifes <= 0 and not Ball.show_message then
 				Ball.show_message = true
 			end
