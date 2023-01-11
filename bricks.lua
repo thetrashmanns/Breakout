@@ -1,10 +1,11 @@
-Bricks = {
+_G.Bricks = {
 	obj = {},
 	b_color = {}
 }
 
-function Bricks.Load()
-	Bricks.b_color = table.copy(Collision.b_color)
+function Bricks:Load()
+	Bricks.b_color.chance = table.copy(Collision.b_color.chance)
+	Bricks.b_color.colors = table.copy(Collision.b_color.colors)
 
 	local column = 0
 	local row = 1
@@ -14,8 +15,9 @@ function Bricks.Load()
 		brick.w = math.truncate((Window_w * 0.0625) - 8)
 		brick.h = 25
 		brick.pos = Vector2(column * (brick.w + 8), row * (brick.h + 8))
-		brick.color = math.probability(Bricks.b_color.chance, Bricks.b_color.colors)
-		table.insert(Bricks.obj, brick)
+		local _color = math.probability(Bricks.b_color.chance, Bricks.b_color.colors)
+		brick.color = {r = _color.r, g = _color.g, b = _color.b}
+		Bricks.obj[#Bricks.obj + 1] = brick
 		column = column + 1
 		if column == 16 then
 			column = 0

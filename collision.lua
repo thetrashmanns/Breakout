@@ -1,4 +1,4 @@
-Collision = {
+_G.Collision = {
 	b_color = {
 		chance = {},
 		colors = {}
@@ -19,13 +19,11 @@ function Collision:B_Dir(normal)
 	Vector2:Verify(normal)
 	local velocity = Ball.vel.length()
 	local sign_x, sign_y = math.sign(Ball.vel.x), math.sign(Ball.vel.y)
-	--Because of the equation this is based upon, norm1 is the square of the dot product.
-	local norm1 = math.sqrt(Vector2:Dot(Ball.vel, normal))
+	local norm1 = Vector2:Dot(Ball.vel, normal)
 	norm1 = sign_x == -1 and norm1 * sign_x or sign_y == -1 and norm1 * sign_y or norm1
 	local norm2 = Vector2:Dot(normal, normal)
 	local u = (norm1 / norm2) * normal.length()
 	local w = velocity - u
-	local v = w - u
 	local angle = math.atan2(w, u)
 	Ball.vel.x = v * math.sin(angle)
 	Ball.vel.y = v * math.cos(angle)

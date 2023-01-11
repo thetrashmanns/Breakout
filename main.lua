@@ -29,10 +29,10 @@ function love.load()
 	require('compat')
 	require('types')
 	require('utils')
-	require('class')
+	class = dofile('class.lua')
 	dofile("tablex.lua")
 	dofile("func.lua")
-	dofile("vector.lua")
+	require("vector")
 	love.window.setMode(1024, 768)
 	Window_w = love.graphics.getWidth()
 	Window_h = love.graphics.getHeight()
@@ -55,33 +55,33 @@ function love.load()
 	Paddle = {
 		w = 85,
 		h = 30,
-		pos = Vector2((Window_w * 0.5) - math.truncate(Paddle.w * 0.5), Window_h - 30),
+		pos = Vector2((Window_w * 0.5) - math.truncate(85 * 0.5), Window_h - 30),
 		xs = 0
 	}
-	dofile("bricks.lua")
 	dofile("collision.lua")
 	for i = 1, 6 do
 		Collision.b_color.chance[i] = 16.667
 		if i == 1 then
 			local rb, gb, bb = love.math.colorFromHEX("#6a5acd")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		elseif i == 2 then
 			local rb, gb, bb = love.math.colorFromHEX("#ee82ee")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		elseif i == 3 then
 			local rb, gb, bb = love.math.colorFromHEX("#ffa500")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		elseif i == 4 then
 			local rb, gb, bb = love.math.colorFromHEX("#3cb371")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		elseif i == 5 then
 			local rb, gb, bb = love.math.colorFromHEX("#95a9e3")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		else
 			local rb, gb, bb = love.math.colorFromHEX("#23a9e3")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = table.pack(rb, gb, bb)
+			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
 		end
 	end
+	dofile("bricks.lua")
 	Bricks.Load()
 	Ball.vel.x = 85
 	Ball.vel.y = -85
@@ -97,7 +97,7 @@ function love.update(dt)
 	if not Ball.show_message and not Ball.quit then
 		for i,v in reverse_ipairs(Bricks.obj) do
 			if Collision:Hit(v) then
-				Collision:B_Dir(Ball, Vector2:Normal(v.pos))
+				Collision:B_Dir(Vector2:Normal(v.pos))
 				table.remove(Bricks.obj, i)
 				Ball.score = Ball.score + 3
 			end
