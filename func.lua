@@ -10,7 +10,7 @@ function math.round(n, precision)
 end
 --Returns if a number is negative or not.
 function math.sign(n) return n > 0 and 1 or n < 0 and -1 or 0 end
---Self-explanitory
+--Self-explanatory
 function math.square(num) return num * num end
 --Clamps a number between 2 values
 function math.clamp(num, min, max) return math.min(math.max(min, num), max) end

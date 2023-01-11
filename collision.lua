@@ -45,9 +45,9 @@ function Collision:Update()
 			local wall = Vector2(Ball.pos.x, wall_y)
 			Collision:B_Dir(Ball, Vector2:Normal(wall))
 		elseif wall_y == "fuck" then
-			Ball.lifes = Ball.lifes - 1
+			Ball.lives = Ball.lives - 1
 			Ball.pos = Vector2(Window_w * 0.5, Window_h * 0.5)
-			if Ball.lifes <= 0 and not Ball.show_message then
+			if Ball.lives <= 0 and not Ball.show_message then
 				Ball.show_message = true
 			end
 		end

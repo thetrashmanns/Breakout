@@ -46,7 +46,7 @@ function love.load()
 			g = 0,
 			b = 0
 		},
-		lifes = 3,
+		lives = 3,
 		show_message = false,
 		won = false,
 		score = 0,
@@ -121,7 +121,7 @@ function love.draw()
 	love.graphics.rectangle("fill", Paddle.pos.x, Paddle.pos.y, Paddle.w, Paddle.h)
 	Bricks.Draw()
 	love.graphics.setColor(0, 0, 1, 1)
-	love.graphics.print("Lives: " .. tostring(Ball.lifes) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
+	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
 	if Ball.show_message and not Ball.won then
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 2, 2)
