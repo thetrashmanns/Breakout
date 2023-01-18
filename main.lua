@@ -32,7 +32,8 @@ function love.load()
 	class = dofile('class.lua')
 	dofile("tablex.lua")
 	dofile("func.lua")
-	require("vector")
+	dofile("vector.lua")
+	G_Font = love.graphics.newFont("MapleMono-Regular.ttf")
 	love.window.setMode(1024, 768)
 	Window_w = love.graphics.getWidth()
 	Window_h = love.graphics.getHeight()
@@ -82,30 +83,22 @@ function love.load()
 		end
 	end
 	dofile("bricks.lua")
-	Bricks.Load()
+	Bricks:Load()
 	Ball.vel.x = 85
 	Ball.vel.y = -85
 	Timer = 300
 end
 
 function love.update(dt)
-	local temp = Collision:Update()
-	coroutine.resume(temp)
 	if Ball.show_message then
 		Timer = Timer - dt
-	end
-	if not Ball.show_message and not Ball.quit then
-		for i,v in reverse_ipairs(Bricks.obj) do
-			if Collision:Hit(v) then
-				Collision:B_Dir(Vector2:Normal(v.pos))
-				table.remove(Bricks.obj, i)
-				Ball.score = Ball.score + 3
-			end
-		end
+	elseif not Ball.show_message and not Ball.quit then
+		Collision:Update()
 		Ball.pos.x = Ball.pos.x + Ball.vel.x * dt
 		Ball.pos.y = Ball.pos.y + Ball.vel.y * dt
-		Paddle.pos.x = (Paddle.pos.x + Paddle.xs * dt > 0 and (Paddle.pos.x + Paddle.w) + Paddle.xs * dt < Window_w) and Paddle.pos.x + Paddle.xs * dt or Paddle.pos.x
-		if #Bricks.obj < 1 then
+		Paddle.pos.x = (Paddle.pos.x + Paddle.xs * dt > 0 and (Paddle.pos.x + Paddle.w) + Paddle.xs * dt < Window_w) and
+				Paddle.pos.x + Paddle.xs * dt or Paddle.pos.x
+		if #Bricks.obj == 0 then
 			Ball.show_message = true
 			Ball.won = true
 		end
@@ -116,23 +109,24 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.setFont(G_Font)
 	love.graphics.setColor(Ball.colors.r, Ball.colors.g, Ball.colors.b, 1)
 	love.graphics.circle("fill", Ball.pos.x, Ball.pos.y, Ball.r)
 	love.graphics.rectangle("fill", Paddle.pos.x, Paddle.pos.y, Paddle.w, Paddle.h)
-	Bricks.Draw()
+	Bricks:Draw()
 	love.graphics.setColor(0, 0, 1, 1)
 	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
 	if Ball.show_message and not Ball.won then
 		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 2, 2)
+		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
 	elseif Ball.show_message and Ball.won then
 		love.graphics.setColor(0, 1, 0, 1)
-		love.graphics.print("You Won! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 2, 2)
+		love.graphics.print("You Won! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
 	end
 	if Ball.quit then
 		local r, g, b = love.math.colorFromHEX("#3c3c3c")
 		love.graphics.setColor(r, g, b, 1)
-		love.graphics.print("Are you sure you want to quit? \n (Y)es/(N)o", (Window_w * 0.0625) * 6, Window_h * 0.5, 2, 2)
+		love.graphics.print("Are you sure you want to quit? \n (Y)es/(N)o", (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
 	end
 end
 
@@ -141,13 +135,11 @@ function love.keypressed(key, scancode, isrepeat)
 		Paddle.xs = Paddle.xs < 200 and Paddle.xs + 200 or Paddle.xs
 	elseif scancode == "left" and Paddle.pos.x > 0 then
 		Paddle.xs = Paddle.xs > -200 and Paddle.xs - 200 or Paddle.xs
-	end
-	if scancode == "escape" then
+	elseif scancode == "escape" then
 		Ball.quit = true
 	elseif scancode == "r" then
 		love.event.quit('restart')
-	end
-	if Ball.quit and scancode == "y" then
+	elseif Ball.quit and scancode == "y" then
 		love.event.quit()
 	elseif Ball.quit and scancode == "n" then
 		Ball.quit = false

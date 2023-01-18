@@ -9,7 +9,7 @@ function Bricks:Load()
 
 	local column = 0
 	local row = 1
-	while 6 >= row do
+	repeat
 		local brick = {}
 		--Because of floating-point imprecision truncate is used to mitigate interference.
 		brick.w = math.truncate((Window_w * 0.0625) - 8)
@@ -23,11 +23,11 @@ function Bricks:Load()
 			column = 0
 			row = row + 1
 		end
-	end
+	until row >= 6
 end
 
-function Bricks.Draw()
-	for _,v in ipairs(Bricks.obj) do
+function Bricks:Draw()
+	for _,v in ipairs(self.obj) do
 		love.graphics.setColor(v.color.r, v.color.g, v.color.b)
 		love.graphics.rectangle("fill", v.pos.x, v.pos.y, v.w, v.h, 10, 10)
 	end
