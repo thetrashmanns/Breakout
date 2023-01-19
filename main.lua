@@ -60,27 +60,18 @@ function love.load()
 		xs = 0
 	}
 	dofile("collision.lua")
+	local color_table = {
+		"#6a5acd",
+		"#ee82ee",
+		"#ffa500",
+		"#3cb371",
+		"#95a9e3",
+		"#23a9e3"
+	}
 	for i = 1, 6 do
 		Collision.b_color.chance[i] = 16.667
-		if i == 1 then
-			local rb, gb, bb = love.math.colorFromHEX("#6a5acd")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		elseif i == 2 then
-			local rb, gb, bb = love.math.colorFromHEX("#ee82ee")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		elseif i == 3 then
-			local rb, gb, bb = love.math.colorFromHEX("#ffa500")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		elseif i == 4 then
-			local rb, gb, bb = love.math.colorFromHEX("#3cb371")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		elseif i == 5 then
-			local rb, gb, bb = love.math.colorFromHEX("#95a9e3")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		else
-			local rb, gb, bb = love.math.colorFromHEX("#23a9e3")
-			Collision.b_color.colors[#Collision.b_color.colors + 1] = {r = rb, g = gb, b = bb}
-		end
+		local rb, gb, bb = love.math.colorFromHEX(color_table[i])
+		Collision.b_color.colors[i] = {r = rb, g = gb, b = bb}
 	end
 	dofile("bricks.lua")
 	Bricks:Load()
@@ -108,14 +99,14 @@ function love.update(dt)
 	end
 end
 
-function love.draw()
+function love.draw(dt)
 	love.graphics.setFont(G_Font)
 	love.graphics.setColor(Ball.colors.r, Ball.colors.g, Ball.colors.b, 1)
 	love.graphics.circle("fill", Ball.pos.x, Ball.pos.y, Ball.r)
 	love.graphics.rectangle("fill", Paddle.pos.x, Paddle.pos.y, Paddle.w, Paddle.h)
 	Bricks:Draw()
 	love.graphics.setColor(0, 0, 1, 1)
-	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
+	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score) .. " " .. tostring(dt), 0, 0)
 	if Ball.show_message and not Ball.won then
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
