@@ -83,7 +83,8 @@ end
 function love.update(dt)
 	if Ball.show_message then
 		Timer = Timer - dt
-	elseif not Ball.show_message and not Ball.quit then
+	end
+	if not Ball.show_message and not Ball.quit then
 		Collision:Update()
 		Ball.pos.x = Ball.pos.x + Ball.vel.x * dt
 		Ball.pos.y = Ball.pos.y + Ball.vel.y * dt
@@ -106,7 +107,7 @@ function love.draw(dt)
 	love.graphics.rectangle("fill", Paddle.pos.x, Paddle.pos.y, Paddle.w, Paddle.h)
 	Bricks:Draw()
 	love.graphics.setColor(0, 0, 1, 1)
-	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score) .. " " .. tostring(dt), 0, 0)
+	love.graphics.print("Lives: " .. tostring(Ball.lives) .. " " .. "Score: " .. tostring(Ball.score), 0, 0)
 	if Ball.show_message and not Ball.won then
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.print("Game Over! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
