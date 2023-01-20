@@ -20,25 +20,28 @@ function Collision:B_Dir(rect)
 	local nearest_x = math.max(rect.pos.x, math.min(Ball.pos.x, rect.pos.x + rect.w))
 	local nearest_y = math.max(rect.pos.y, math.min(Ball.pos.y, rect.pos.y + rect.h))
 	local dist = Vector2(Ball.pos.x - nearest_x, Ball.pos.y - nearest_y)
-	local tang_vel = Vector2:Dot(Vector2:Normalize(dist), Ball.vel)
-	Ball.vel = Vector2(Ball.vel.x - (tang_vel.x * 2), Ball.vel.y - (tang_vel.y * 2))
+	local dnorm = Vector2(-dist.y, dist.x)
+	local d_angle = math.atan2(dnorm.y, dnorm.x)
+	local incoming = math.atan2(Ball.vel.y, Ball.vel.x)
+	local theta = d_angle - incoming
+	Ball.vel.x = Ball.vel.length() * math.cos(theta)
+	Ball.vel.y = -Ball.vel.length() * math.sin(theta)
+	print(tostring(Ball.vel.x) .. " " .. tostring(Ball.vel.y))
 end
 --Using reverse ipairs ensures the bricks closest to the ball get checked first
 function Collision:Bricks()
-	return coroutine.create(function()
-		for i,v in reverse_ipairs(Bricks.obj) do
-			if Collision:Hit(v) then
-				Collision:B_Dir(v)
-				table.remove(Bricks.obj, i)
-				Ball.colors = math.probability(Collision.b_color.chance, Collision.b_color.colors)
-				Ball.score = Ball.score + 3
-			end
+	for i,v in reverse_ipairs(Bricks.obj) do
+		if self:Hit(v) then
+			self:B_Dir(v)
+			table.remove(Bricks.obj, i)
+			Ball.colors = math.probability(self.b_color.chance, self.b_color.colors)
+			Ball.score = Ball.score + 3
 		end
-	end)
+	end
 end
 
 function Collision:Update()
-	coroutine.resume(self:Bricks())
+	self:Bricks()
 	if self:Hit(Paddle) then
 		self:B_Dir(Paddle.pos)
 		Ball.colors = math.probability(self.b_color.chance, self.b_color.colors)
