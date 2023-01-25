@@ -88,8 +88,7 @@ function love.update(dt)
 		Collision:Update()
 		Ball.pos.x = Ball.pos.x + Ball.vel.x * dt
 		Ball.pos.y = Ball.pos.y + Ball.vel.y * dt
-		Paddle.pos.x = (Paddle.pos.x + Paddle.xs * dt > 0 and (Paddle.pos.x + Paddle.w) + Paddle.xs * dt < Window_w) and
-				Paddle.pos.x + Paddle.xs * dt or Paddle.pos.x
+		Paddle.pos.x = (Paddle.pos.x + Paddle.xs * dt > 0 and (Paddle.pos.x + Paddle.w) + Paddle.xs * dt < Window_w) and Paddle.pos.x + Paddle.xs * dt or Paddle.pos.x
 		if #Bricks.obj == 0 then
 			Ball.show_message = true
 			Ball.won = true
@@ -114,8 +113,7 @@ function love.draw(dt)
 	elseif Ball.show_message and Ball.won then
 		love.graphics.setColor(0, 1, 0, 1)
 		love.graphics.print("You Won! \n Would you like to restart? \n (Y)es/(N)o \n " .. tostring(Timer), (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)
-	end
-	if Ball.quit then
+	elseif Ball.quit then
 		local r, g, b = love.math.colorFromHEX("#3c3c3c")
 		love.graphics.setColor(r, g, b, 1)
 		love.graphics.print("Are you sure you want to quit? \n (Y)es/(N)o", (Window_w * 0.0625) * 6, Window_h * 0.5, 0, 2, 2)

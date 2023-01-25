@@ -27,8 +27,8 @@ function Bricks:Load()
 end
 
 function Bricks:Draw()
-	for _,v in ipairs(self.obj) do
-		love.graphics.setColor(v.color.r, v.color.g, v.color.b)
-		love.graphics.rectangle("fill", v.pos.x, v.pos.y, v.w, v.h, 10, 10)
+	for i = 1, #self.obj do
+		love.graphics.setColor(self.obj[i].color.r, self.obj[i].color.g, self.obj[i].color.b)
+		love.graphics.rectangle("fill", self.obj[i].pos.x, self.obj[i].pos.y, self.obj[i].w, self.obj[i].h, 10, 10)
 	end
 end

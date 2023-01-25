@@ -1,10 +1,10 @@
-Vector2 = class()
+Vector2 = Vector2 or class()
 
 function Vector2:_init(x, y)
 	self.x = x
 	self.y = y
 	self.length = function()
-		return math.sqrt(math.abs(math.square(self.x) + math.square(self.y))) or 1
+		return math.abs(math.square(self.x) + math.square(self.y))^0.5 or 1
 	end
 end
 --Verify the vectors given to a function, was doing it multiple times so made a function.

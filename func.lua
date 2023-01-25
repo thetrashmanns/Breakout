@@ -6,9 +6,7 @@
 ---@param precision number|nil
 ---@return number
 function math.round(n, precision)
-	if not n then
-		return 1
-	end
+	if not n then return end
 	precision = precision or 1
 
 	return math.floor((n + precision * 0.5) / precision) * precision
@@ -44,8 +42,8 @@ function math.probability(chance_table, result_table)
 	local total_chance = 0
 	local choice = #chance_table
 
-	for id, chance in pairs(chance_table) do
-		total_chance = total_chance + chance
+	for id = 1, #chance_table do
+		total_chance = total_chance + chance_table[id]
 		if random <= total_chance then
 			choice = id
 			break
@@ -63,9 +61,7 @@ end
 ---@param precision number|nil
 ---@return number
 function math.truncate(n, precision)
-	if not n then
-		return 1
-	end
+	if not n then return end
 	precision = precision or 0
 	local prec_mul = math.pow(10, precision)
 
