@@ -6,6 +6,7 @@
         "${3rd}/love2d/library"
     ],
     "Lua.diagnostics.disable": [
-        "lowercase-global"
+        "lowercase-global",
+        "missing-return-value"
     ]
 }

@@ -35,7 +35,7 @@ function Vector2:Distance(v1, v2)
 	self:Verify(v1, v2)
 	local x = math.square(v2.x - v1.x)
 	local y = math.square(v2.y - v1.y)
-	return math.sqrt(math.abs(x + y))
+	return math.sqrt(x + y)
 end
 --Returns the normal of two given vectors.
 function Vector2:Normal(v1, v2)
@@ -44,7 +44,7 @@ function Vector2:Normal(v1, v2)
 	local y = v2.y - v1.y
 	--Normal vectors (in 2D) are in the form: x = dy; y = -dx.
 	--Would explain how that was derived, but that's too much work lmao.
-	return Vector2(-y, x)
+	return Vector2(y, -x)
 end
 --Returns the normalized form of a given vector (<= 1)
 function Vector2:Normalize(vector)
